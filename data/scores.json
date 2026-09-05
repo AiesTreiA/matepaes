@@ -1,0 +1,30 @@
+[
+  {
+    "player": "Manuel",
+    "score": 2450,
+    "world": 5,
+    "date": "2026-09-01",
+    "medal": "Oro"
+  },
+  {
+    "player": "Sofía (1°A)",
+    "score": 2100,
+    "world": 5,
+    "date": "2026-09-02",
+    "medal": "Plata"
+  },
+  {
+    "player": "Matías (1°B)",
+    "score": 1850,
+    "world": 4,
+    "date": "2026-09-03",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Valentina (1°C)",
+    "score": 1600,
+    "world": 4,
+    "date": "2026-09-04",
+    "medal": "Bronce"
+  }
+]

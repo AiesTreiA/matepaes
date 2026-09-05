@@ -1,0 +1,25 @@
+{
+  "name": "manuel-matematicas-1medio",
+  "version": "1.0.0",
+  "description": "Videojuego interactivo de matemáticas para 1° Medio (Chile): Productos Notables, Factorización y Ecuaciones Lineales.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "keywords": [
+    "matematicas",
+    "educacion",
+    "1medio",
+    "chile",
+    "algebra",
+    "productos-notables",
+    "ecuaciones"
+  ],
+  "author": "Manuel & Antigravity",
+  "license": "MIT"
+}
