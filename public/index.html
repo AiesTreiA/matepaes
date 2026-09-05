@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manuel: Guardián del Álgebra | 1° Medio Chile</title>
-  <meta name="description" content="Videojuego interactivo de matemáticas para 1° Medio de Chile enfocado en Productos Notables, Factorización y Ecuaciones Lineales.">
-  <link rel="stylesheet" href="/css/style.css?v=3.1.0">
+  <meta name="description" content="Videojuego interactivo de matemáticas para 1° Medio de Chile enfocado en Productos Notables, Factorización y Ecuaciones Lineales (MINEDUC).">
+  
+  <!-- Google Fonts: Outfit (Display & Math) + Inter (Lectura) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css?v=3.2.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -13,128 +19,475 @@
 </head>
 <body>
 
+  <!-- CUADRÍCULA CÓSMICA DE FONDO (STITCH COSMIC GRID) -->
+  <div class="cosmic-grid-bg"></div>
+
   <!-- CANVAS PARA CONFETI -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR (HUD STITCH GAMIFICADO) -->
   <nav class="navbar" role="navigation" aria-label="Navegación principal">
-    <div class="brand btn-back-menu" role="button" tabindex="0" title="Volver al menú">
-      <div class="brand-icon">📐</div>
-      <div class="brand-text">
-        <h1>MANUEL: ÁLGEBRA</h1>
+    <div class="nav-inner">
+      <!-- Identidad y Marca MINEDUC -->
+      <div class="brand btn-back-menu" role="button" tabindex="0" title="Volver al menú principal">
+        <div class="brand-icon">📐</div>
+        <div class="brand-text">
+          <h1><span>ÁLGEBRA</span></h1>
+          <div class="brand-subtext">
+            <span class="brand-badge">1° Medio Chile</span>
+            <span class="brand-subtext-mineduc">· MINEDUC</span>
+          </div>
+        </div>
       </div>
-      <span class="brand-badge">1° Medio Chile</span>
-    </div>
 
-    <div class="nav-stats">
-      <div class="stat-chip" title="Puntaje Total">
-        <span>⭐</span>
-        <span id="stat-score">0</span>
+      <!-- Métricas del Jugador en Vivo (HUD) -->
+      <div class="nav-stats">
+        <!-- Vidas Restantes -->
+        <div class="stat-chip stat-lives" title="Vidas Restantes (3/3)">
+          <span id="stat-lives">❤️❤️❤️</span>
+        </div>
+
+        <!-- Racha Diaria -->
+        <div class="stat-chip stat-streak" title="Racha de estudio consecutivo">
+          <span id="stat-streak">🔥 4 días</span>
+        </div>
+
+        <!-- Experiencia Acumulada -->
+        <div class="stat-chip stat-xp" title="Puntos de Experiencia (XP)">
+          <span>⭐</span>
+          <span id="stat-score">0</span>
+          <span class="xp-label">XP</span>
+        </div>
+
+        <!-- Controles de Audio Lo-Fi & SFX -->
+        <div class="audio-group">
+          <button id="btn-toggle-bgm" class="btn-icon" title="Música Lo-Fi Álgebra" aria-label="Música de concentración">
+            🎵
+          </button>
+          <button id="btn-toggle-mute" class="btn-icon" title="Efectos de sonido 8-bit" aria-label="Efectos de sonido">
+            🔊
+          </button>
+        </div>
+
+        <!-- Perfil del Jugador -->
+        <div class="user-hud-profile">
+          <div class="user-avatar-mini" title="Guardián Activo">
+            <div class="user-avatar-mini-inner">🧑‍🎓</div>
+            <span class="status-dot-online" title="En línea"></span>
+          </div>
+          <div class="user-hud-info">
+            <span class="user-hud-name" id="user-hud-name">Manuel</span>
+            <span class="user-hud-rank">Nv. 5 Guardián</span>
+          </div>
+        </div>
       </div>
-      <div class="stat-chip" title="Vidas Restantes">
-        <span id="stat-lives">❤️❤️❤️</span>
-      </div>
-      <button id="btn-toggle-bgm" class="btn-icon" title="Música 8-bit de fondo" aria-label="Activar música de fondo">
-        🎵
-      </button>
-      <button id="btn-toggle-mute" class="btn-icon" title="Silenciar efectos" aria-label="Silenciar sonidos">
-        🔊
-      </button>
     </div>
   </nav>
 
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="container">
 
-    <!-- 1. VISTA: MENÚ PRINCIPAL -->
+    <!-- ====================================================================
+         1. VISTA: MENÚ PRINCIPAL (LOBBY INTERACTIVO)
+         ==================================================================== -->
     <section id="view-menu" class="view-section active">
-      <div class="hero-card">
-        <div class="manuel-avatar-wrap"></div>
-        <h2 class="hero-title">Manuel: Guardián del Álgebra</h2>
-        <p class="hero-subtitle">
-          ¡Acompaña a Manuel en una aventura matemática épica! Domina los productos notables, la factorización y el equilibrio de las ecuaciones lineales según el currículum oficial de 1° Medio de Chile (MINEDUC).
-        </p>
+      
+      <!-- HERO BANNER CON AVATAR DE MANUEL Y MISIÓN SEMANAL -->
+      <div class="glass-panel hero-card">
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
 
-        <div class="curriculum-pills">
-          <span class="curriculum-pill">OA 3: Cuadrado de Binomio</span>
-          <span class="curriculum-pill">OA 3: Suma por Diferencia</span>
-          <span class="curriculum-pill">OA 3: Término Común</span>
-          <span class="curriculum-pill">OA 2: Factorización</span>
-          <span class="curriculum-pill">OA 4: Ecuaciones de 1° Grado</span>
-          <span class="curriculum-pill">Balanza Algebraica</span>
-        </div>
-
-        <div class="menu-grid">
-          <!-- Modo Historia -->
-          <div class="menu-card" id="btn-start-story">
-            <div>
-              <div class="menu-card-icon">⚔️</div>
-              <h3 class="menu-card-title">La Odisea de Manuel</h3>
-              <p class="menu-card-desc">
-                Recorre 5 mundos misteriosos, vence criaturas de monomios y derrota al Dr. Monomio en su torre.
-              </p>
-            </div>
-            <span class="menu-card-tag">Modo Historia (5 Mundos)</span>
+        <div class="hero-content">
+          <!-- Avatar de Manuel con Aura Neón -->
+          <div class="hero-avatar-container">
+            <div class="avatar-aura"></div>
+            <div class="manuel-avatar-wrap"></div>
+            <div class="avatar-level-badge">Nivel 5</div>
           </div>
 
-          <!-- Modo Práctica -->
-          <div class="menu-card" id="btn-start-practice">
-            <div>
-              <div class="menu-card-icon">🧪</div>
-              <h3 class="menu-card-title">Laboratorio de Práctica</h3>
-              <p class="menu-card-desc">
-                Entrena temas específicos sin límite de tiempo ni vidas. Visualiza áreas y la balanza en tiempo real.
-              </p>
-            </div>
-            <span class="menu-card-tag">Práctica Libre</span>
-          </div>
+          <h2 class="hero-title">Manuel: <span>Guardián del Álgebra</span></h2>
+          <p class="hero-subtitle">
+            ¡Acompaña a Manuel en una aventura matemática épica! Domina los productos notables, la factorización y el equilibrio de las ecuaciones lineales según el currículum oficial de <strong>1° Medio de Chile (MINEDUC)</strong>.
+          </p>
 
-          <!-- Modo SIMCE Desafío -->
-          <div class="menu-card" id="btn-start-simce">
-            <div>
-              <div class="menu-card-icon">⏱️</div>
-              <h3 class="menu-card-title">Desafío Contrarreloj (SIMCE)</h3>
-              <p class="menu-card-desc">
-                10 ejercicios tipo prueba de 1° Medio en 3 minutos. ¡Gana tu Diploma de Honor oficial descargable!
-              </p>
+          <!-- Widget Misión Semanal 1° Medio -->
+          <div class="weekly-mission-card">
+            <div class="weekly-mission-header">
+              <span class="weekly-mission-title">
+                <span class="pulse-dot"></span>
+                🎯 Misión Semanal: 1° Medio Álgebra
+              </span>
+              <span class="weekly-mission-progress-text">13 / 20 resueltos <strong>(65%)</strong></span>
             </div>
-            <span class="menu-card-tag">Test con Diploma</span>
-          </div>
-
-          <!-- Cuaderno de Fórmulas -->
-          <div class="menu-card" id="btn-show-cheatsheet">
-            <div>
-              <div class="menu-card-icon">📖</div>
-              <h3 class="menu-card-title">Cuaderno de Fórmulas</h3>
-              <p class="menu-card-desc">
-                Fórmulas oficiales, reglas mnemotécnicas y ejemplos prácticos de Álgebra de 1° Medio.
-              </p>
+            <div class="progress-track">
+              <div class="progress-fill-gradient" style="width: 65%;"></div>
             </div>
-            <span class="menu-card-tag">Guía de Estudio</span>
-          </div>
-
-          <!-- Ranking -->
-          <div class="menu-card" id="btn-show-leaderboard">
-            <div>
-              <div class="menu-card-icon">🏆</div>
-              <h3 class="menu-card-title">Salón de la Fama</h3>
-              <p class="menu-card-desc">
-                Consulta los mejores puntajes de los estudiantes y compite por el primer lugar del liceo.
-              </p>
+            <div class="weekly-mission-footer">
+              <span>Recompensa: +300 XP + Medalla "Héroe del Binomio"</span>
+              <span class="badge-time">Quedan 2 días</span>
             </div>
-            <span class="menu-card-tag">Clasificación</span>
           </div>
         </div>
       </div>
+
+      <!-- CHIPS DE FILTRADO POR OBJETIVOS DE APRENDIZAJE (MINEDUC) -->
+      <div class="curriculum-chips-section">
+        <div class="curriculum-chips-header">
+          <span>📐 Objetivos de Aprendizaje (OA) Priorizados MINEDUC</span>
+          <span style="color: var(--primary-cyan); font-weight: 600;">1° Medio 2025-2026</span>
+        </div>
+        <div class="curriculum-chips-scroll">
+          <button class="oa-filter-btn active" data-topic="all">
+            <span class="pulse-dot"></span>
+            Todos los OAs
+          </button>
+          <button class="oa-filter-btn" data-topic="cuadrado_binomio">
+            <span class="oa-tag oa-tag-cyan">OA 3</span>
+            Cuadrado de Binomio
+          </button>
+          <button class="oa-filter-btn" data-topic="suma_por_diferencia">
+            <span class="oa-tag oa-tag-cyan">OA 3</span>
+            Suma por Diferencia
+          </button>
+          <button class="oa-filter-btn" data-topic="termino_comun">
+            <span class="oa-tag oa-tag-cyan">OA 3</span>
+            Término Común
+          </button>
+          <button class="oa-filter-btn" data-topic="factor_comun">
+            <span class="oa-tag oa-tag-emerald">OA 2</span>
+            Factorización
+          </button>
+          <button class="oa-filter-btn" data-topic="lineal_entera">
+            <span class="oa-tag oa-tag-purple">OA 4</span>
+            Ecuaciones de 1° Grado
+          </button>
+          <button class="oa-filter-btn" data-topic="balanza">
+            <span class="oa-tag oa-tag-amber">⚖️</span>
+            Balanza Algebraica
+          </button>
+        </div>
+      </div>
+
+      <!-- CUADRÍCULA DE 6 MODOS DE JUEGO -->
+      <div class="menu-grid">
+        
+        <!-- MODO 1: LA ODISEA DE MANUEL (HISTORIA) -->
+        <article class="glass-panel mode-card" id="btn-start-story">
+          <div class="mode-glow-orb" style="background: rgba(0, 210, 255, 0.2);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">
+                ⚔️
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan); border-color: rgba(0, 210, 255, 0.3);">
+                  Modo Historia
+                </span>
+                <span class="mode-sub-tag">Mundo 2 de 5</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">La Odisea de Manuel</h3>
+            <p class="mode-card-desc">
+              Recorre 5 reinos matemáticos, vence a criaturas de monomios y derrota al <strong>Dr. Monomio</strong> en su torre del terror.
+            </p>
+            <div class="mode-card-stat-box">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span style="color: var(--text-muted);">Mundo Activo: <strong style="color: #fff;">Desierto de Términos</strong></span>
+                <span style="color: var(--tertiary-gold); font-weight: 700;">Nivel 4/8</span>
+              </div>
+              <div class="progress-track" style="height: 6px;">
+                <div style="height: 100%; width: 50%; background: var(--tertiary-gold); border-radius: 999px;"></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-cyan">
+            <span>Continuar Aventura</span>
+            <span>➡️</span>
+          </button>
+        </article>
+
+        <!-- MODO 2: LABORATORIO DE PRÁCTICA LIBRE -->
+        <article class="glass-panel mode-card" id="btn-start-practice">
+          <div class="mode-glow-orb" style="background: rgba(16, 185, 129, 0.2);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">
+                🧪
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint); border-color: rgba(16, 185, 129, 0.3);">
+                  Práctica Libre
+                </span>
+                <span class="mode-sub-tag" style="color: var(--secondary-mint);">Sin límite de vidas</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">Laboratorio de Práctica</h3>
+            <p class="mode-card-desc">
+              Entrena temas específicos sin presión de tiempo. Visualiza áreas geométricas cuadradas y rectangulares para entender <strong>(a + b)²</strong>.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 1.25rem;">
+              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Factor Común</span>
+              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Binomio Suma</span>
+              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Dif. Cuadrados</span>
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-emerald">
+            <span>Entrenar Libre</span>
+            <span>⚡</span>
+          </button>
+        </article>
+
+        <!-- MODO 3: DESAFÍO CONTRARRELOJ (SIMCE) -->
+        <article class="glass-panel mode-card" id="btn-start-simce">
+          <div class="mode-glow-orb" style="background: rgba(244, 63, 94, 0.2);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">
+                ⏱️
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border-color: rgba(244, 63, 94, 0.3);">
+                  Tipo SIMCE / PAES
+                </span>
+                <span class="mode-sub-tag" style="color: var(--tertiary-gold);">3 Minutos</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">Desafío Contrarreloj</h3>
+            <p class="mode-card-desc">
+              10 preguntas estandarizadas de 1° Medio. ¡Consigue puntaje destacado y obtén tu <strong>Diploma Digital Oficial</strong>!
+            </p>
+            <div class="mode-card-stat-box" style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="color: var(--text-muted);">Mejor Marca:</span>
+              <span style="color: #fff; font-weight: 700;">🏆 9 / 10 (2:14 min)</span>
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-rose">
+            <span>Iniciar Test SIMCE</span>
+            <span>⏱️</span>
+          </button>
+        </article>
+
+        <!-- MODO 4: BALANZA ALGEBRAICA DINÁMICA -->
+        <article class="glass-panel mode-card" id="btn-start-balance">
+          <div class="mode-glow-orb" style="background: rgba(245, 158, 11, 0.2);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">
+                ⚖️
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold); border-color: rgba(245, 158, 11, 0.3);">
+                  Simulador Dinámico
+                </span>
+                <span class="mode-sub-tag">OA 4: Ecuaciones</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">Balanza Algebraica 3D</h3>
+            <p class="mode-card-desc">
+              Aprende a despejar la incógnita <strong>x</strong> de manera visual: quita o agrega pesas a ambos platillos para mantener el equilibrio.
+            </p>
+            <div class="mode-card-stat-box" style="font-family: var(--font-display); text-align: center; color: var(--tertiary-gold);">
+              2x + 5 = 15  ➜  2x = 10  ➜  <strong style="color: #fff;">x = 5</strong>
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-amber">
+            <span>Abrir Simulador</span>
+            <span>⚖️</span>
+          </button>
+        </article>
+
+        <!-- MODO 5: CUADERNO DE FÓRMULAS & TRUCOS -->
+        <article class="glass-panel mode-card" id="btn-show-cheatsheet">
+          <div class="mode-glow-orb" style="background: rgba(99, 102, 241, 0.2);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc;">
+                📖
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.3);">
+                  Guía de Consulta
+                </span>
+                <span class="mode-sub-tag">12 Fórmulas</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">Cuaderno de Fórmulas</h3>
+            <p class="mode-card-desc">
+              Tarjetas de repaso rápido, demostraciones visuales por áreas coloreadas y 'hacks' mentales para resolver binomios en segundos.
+            </p>
+            <div style="font-size: 0.75rem; color: #a5b4fc; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 1.25rem;">
+              💡 Resumen oficial descargable de 1° Medio MINEDUC.
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-indigo">
+            <span>Abrir Cuaderno</span>
+            <span>📖</span>
+          </button>
+        </article>
+
+        <!-- MODO 6: SALÓN DE LA FAMA & LOGROS -->
+        <article class="glass-panel mode-card" id="btn-show-leaderboard">
+          <div class="mode-glow-orb" style="background: rgba(245, 158, 11, 0.25);"></div>
+          <div>
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">
+                🏆
+              </div>
+              <div class="mode-badge-col">
+                <span class="mode-tag-pill" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold); border-color: rgba(245, 158, 11, 0.3);">
+                  Torneo Escolar
+                </span>
+                <span class="mode-sub-tag" style="color: var(--secondary-mint);">Top 5% del Liceo</span>
+              </div>
+            </div>
+            <h3 class="mode-card-title">Salón de la Fama</h3>
+            <p class="mode-card-desc">
+              Compite sanamente con tus compañeros de curso. Desbloquea medallas como <em>"Maestro del Trinomio"</em> y <em>"Ojo de Águila Lineal"</em>.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 0.72rem; margin-bottom: 1.25rem;">
+              <div class="glass-chip" style="padding: 4px;">
+                <span style="color: var(--text-muted); display: block;">#2 Camila</span>
+                <strong style="color: #fff;">1,620 XP</strong>
+              </div>
+              <div class="glass-chip" style="padding: 4px; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.15);">
+                <span style="color: var(--tertiary-gold); font-weight: 700; display: block;">🥇 #1 Matías</span>
+                <strong style="color: var(--tertiary-gold);">1,890 XP</strong>
+              </div>
+              <div class="glass-chip" style="padding: 4px;">
+                <span style="color: var(--primary-cyan); display: block;">#3 Tú</span>
+                <strong style="color: #fff;">1,450 XP</strong>
+              </div>
+            </div>
+          </div>
+          <button class="btn-card-action btn-action-amber">
+            <span>Ver Ranking y Medallas</span>
+            <span>🏆</span>
+          </button>
+        </article>
+
+      </div>
+
+      <!-- ====================================================================
+           🏛️ GALERÍA DE MAESTROS: LAS RAÍCES DEL ÁLGEBRA (STITCH FEATURE)
+           ==================================================================== -->
+      <section class="glass-panel historical-masters-section" aria-label="Galería de figuras históricas de la matemática">
+        <div class="historical-header">
+          <div class="historical-badge-row">
+            <span class="brand-badge" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-light); border-color: rgba(0, 210, 255, 0.3);">
+              Inspiración Histórica
+            </span>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">· Guardianes del Pensamiento</span>
+          </div>
+          <h2 class="historical-title">🏛️ Galería de Maestros: Las Raíces del Álgebra</h2>
+          <p class="historical-desc">
+            Descubre a los pioneros que sentaron las bases de las ecuaciones y patrones que hoy aprendes en 1° Medio.
+          </p>
+        </div>
+
+        <div class="historical-grid">
+          <!-- Figura 1: Al-Juarismi -->
+          <div class="historical-card">
+            <div class="historical-img-wrap">
+              <img src="/images/al-khwarizmi.jpg" alt="Retrato histórico clásico de Al-Juarismi, padre del álgebra" loading="lazy">
+            </div>
+            <div class="historical-info">
+              <div class="historical-meta-row">
+                <span class="brand-badge" style="font-size: 0.65rem; background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan); border-color: rgba(0, 210, 255, 0.3);">
+                  Padre del Álgebra
+                </span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-display);">c. 780 – c. 850</span>
+              </div>
+              <h3 class="historical-name">Al-Juarismi (Al-Jwārizmī)</h3>
+              <p class="historical-bio">
+                Su obra <em>Al-Kitāb al-muḫtaṣar fī ḥisāb al-ŷabr wa-l-muqābala</em> dio origen a la palabra <strong>«Álgebra»</strong> (<em>al-ŷabr</em>: restaurar y equilibrar términos a ambos lados de una igualdad).
+              </p>
+              <div class="historical-curriculum-link">
+                <span>✨ Conexión 1° Medio:</span>
+                <span>Base conceptual de la Balanza Algebraica (OA 4)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Figura 2: Carl Friedrich Gauss -->
+          <div class="historical-card historical-card-gauss">
+            <div class="historical-img-wrap" style="border-color: rgba(245, 158, 11, 0.3);">
+              <img src="/images/gauss.jpg" alt="Retrato clásico de Carl Friedrich Gauss, príncipe de las matemáticas" loading="lazy">
+            </div>
+            <div class="historical-info">
+              <div class="historical-meta-row">
+                <span class="brand-badge" style="font-size: 0.65rem; background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold); border-color: rgba(245, 158, 11, 0.3);">
+                  Príncipe de las Matemáticas
+                </span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-display);">1777 – 1855</span>
+              </div>
+              <h3 class="historical-name">Carl Friedrich Gauss</h3>
+              <p class="historical-bio">
+                A los 9 años descubrió la simetría para sumar los números del 1 al 100. Demostró el <strong>Teorema Fundamental del Álgebra</strong> que rige la cantidad de soluciones de los polinomios.
+              </p>
+              <div class="historical-curriculum-link historical-curriculum-link-amber">
+                <span>🧠 Conexión 1° Medio:</span>
+                <span>Factorización y regularidades polinómicas (OA 2 y 3)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           ⚡ DESAFÍO RELÁMPAGO DEL DÍA (STITCH QUICK PUZZLE WIDGET)
+           ==================================================================== -->
+      <section class="glass-panel daily-puzzle-section" aria-label="Desafío diario de álgebra">
+        <div class="daily-puzzle-header">
+          <div class="daily-puzzle-tag">
+            <span class="pulse-dot"></span>
+            <span>Desafío Relámpago del Día</span>
+          </div>
+          <span class="daily-puzzle-reward">Recompensa Instantánea: +50 XP ⚡</span>
+        </div>
+
+        <div class="daily-puzzle-body">
+          <div class="daily-puzzle-math-box">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.25rem;">
+              ¿Cuál es la forma más simplificada de esta expresión?
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Aplica la diferencia de cuadrados o desarrolla los binomios:
+            </p>
+            <div class="daily-puzzle-formula">
+              (2x + 3)² - (2x - 3)² = ?
+            </div>
+          </div>
+
+          <div class="daily-puzzle-options" id="puzzle-daily-options">
+            <button class="puzzle-option-btn" data-option="A">
+              <span>A) &nbsp; 8x² + 18</span>
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Elegir</span>
+            </button>
+            <button class="puzzle-option-btn" data-option="B" data-correct="true">
+              <span>B) &nbsp; 24x</span>
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Elegir</span>
+            </button>
+            <button class="puzzle-option-btn" data-option="C">
+              <span>C) &nbsp; 12x</span>
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Elegir</span>
+            </button>
+          </div>
+
+          <div id="puzzle-daily-feedback" class="puzzle-feedback-msg"></div>
+        </div>
+      </section>
+
     </section>
 
-    <!-- 2. VISTA: TABLERO DE JUEGO (GAME BOARD) -->
+    <!-- ====================================================================
+         2. VISTA: TABLERO DE JUEGO (GAME BOARD)
+         ==================================================================== -->
     <section id="view-game" class="view-section">
       <!-- Encabezado de Nivel -->
       <div class="game-header">
         <div>
           <span id="world-badge" class="problem-badge">Mundo 1</span>
-          <h3 id="world-title" style="font-size: 1.25rem; font-weight: 800;">El Bosque de los Monomios</h3>
+          <h3 id="world-title" style="font-size: 1.3rem; font-weight: 800; font-family: var(--font-display);">El Bosque de los Monomios</h3>
         </div>
         
         <div class="game-progress-wrap">
@@ -143,9 +496,9 @@
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.5rem; align-items: center;">
-          <span id="simce-timer-display" class="stat-chip" style="display: none; color: #fbbf24; border-color: #f59e0b;">⏱️ 3:00</span>
-          <button class="btn btn-secondary btn-back-menu" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Salir</button>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <span id="simce-timer-display" class="stat-chip stat-streak" style="display: none;">⏱️ 3:00</span>
+          <button class="btn btn-secondary btn-back-menu" style="padding: 0.45rem 1rem; font-size: 0.85rem;">Salir al Menú</button>
         </div>
       </div>
 
@@ -154,20 +507,20 @@
         <div class="arena-actors">
           <!-- Manuel -->
           <div class="actor-card">
-            <div class="manuel-avatar-wrap" style="width: 56px; height: 56px; margin: 0;"></div>
+            <div class="manuel-avatar-wrap" style="width: 54px; height: 54px; margin: 0; padding: 2px;"></div>
             <div>
-              <div style="font-weight: 800; font-size: 0.95rem; color: #38bdf8;">Manuel (1° Medio)</div>
-              <div style="font-size: 0.75rem; color: #94a3b8;">Nivel de Dominio: Álgebra</div>
+              <div style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--primary-sky);">Manuel (1° Medio)</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Nivel de Dominio: Álgebra</div>
             </div>
           </div>
 
-          <div style="font-size: 1.3rem; font-weight: 900; color: #f59e0b;">VS</div>
+          <div style="font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; color: var(--tertiary-gold);">VS</div>
 
           <!-- Enemigo / Desafío -->
           <div class="actor-card">
             <div id="enemy-sprite-wrap"></div>
             <div>
-              <div id="enemy-name" style="font-weight: 800; font-size: 0.95rem; color: #f87171;">Gólem Monomio</div>
+              <div id="enemy-name" style="font-family: var(--font-display); font-weight: 800; font-size: 0.95rem; color: var(--danger-rose);">Gólem Monomio</div>
               <div class="actor-hp-bar">
                 <div id="enemy-hp-fill" class="actor-hp-fill" style="width: 100%;"></div>
               </div>
@@ -178,7 +531,7 @@
         <!-- Cuadro de Diálogo de Manuel -->
         <div class="dialogue-box">
           <span id="dialogue-speaker" class="dialogue-speaker">Manuel:</span>
-          <span id="dialogue-content">¡Vamos con todo! Analicemos bien la expresión.</span>
+          <span id="dialogue-content">¡Vamos con todo! Analicemos bien la expresión paso a paso.</span>
         </div>
       </div>
 
@@ -199,14 +552,16 @@
         </div>
 
         <!-- Botones de Acción -->
-        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;">
           <button id="btn-show-hint" class="btn btn-secondary">💡 Pedir Pista a Manuel</button>
           <button id="btn-next-exercise" class="btn btn-primary" style="display: none;">Siguiente Desafío ➡️</button>
         </div>
 
         <!-- Retroalimentación Pedagógica Paso a Paso -->
         <div id="feedback-box" class="feedback-box">
-          <h4 id="feedback-title" style="font-weight: 800; font-size: 1.1rem; margin-bottom: 0.6rem;">✨ Paso a Paso de la Solución</h4>
+          <h4 id="feedback-title" style="font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; margin-bottom: 0.6rem; color: var(--primary-cyan);">
+            ✨ Paso a Paso de la Solución
+          </h4>
           <ul id="steps-list" class="steps-list">
             <!-- Pasos generados algorítmicamente -->
           </ul>
@@ -214,137 +569,144 @@
       </div>
     </section>
 
-    <!-- 3. VISTA: SELECCIÓN DE LABORATORIO DE PRÁCTICA -->
+    <!-- ====================================================================
+         3. VISTA: SELECCIÓN DE LABORATORIO DE PRÁCTICA
+         ==================================================================== -->
     <section id="view-practice-select" class="view-section">
-      <div class="hero-card">
+      <div class="glass-panel hero-card" style="text-align: left;">
         <h2 class="hero-title">Laboratorio de Práctica Libre</h2>
         <p class="hero-subtitle">
           Selecciona el contenido de 1° Medio que deseas repasar. Practica con infinitos ejercicios generados aleatoriamente y retroalimentación pedagógica.
         </p>
 
         <div style="margin-bottom: 1.5rem;">
-          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú</button>
+          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú Principal</button>
         </div>
 
         <div class="menu-grid">
-          <div class="menu-card practice-topic-btn" data-topic="cuadrado_binomio">
-            <div class="menu-card-icon">🟦</div>
-            <h3 class="menu-card-title">Cuadrado de Binomio</h3>
-            <p class="menu-card-desc">(a ± b)² = a² ± 2ab + b² con representación de áreas.</p>
-            <span class="menu-card-tag">Productos Notables</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="cuadrado_binomio">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">🟦</div>
+              <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">Productos Notables</span>
+            </div>
+            <h3 class="mode-card-title">Cuadrado de Binomio</h3>
+            <p class="mode-card-desc">(a ± b)² = a² ± 2ab + b² con representación de áreas.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="suma_por_diferencia">
-            <div class="menu-card-icon">⚡</div>
-            <h3 class="menu-card-title">Suma por Diferencia</h3>
-            <p class="menu-card-desc">(a + b)(a - b) = a² - b². Cancelación del término medio.</p>
-            <span class="menu-card-tag">Productos Notables</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="suma_por_diferencia">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">⚡</div>
+              <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">Productos Notables</span>
+            </div>
+            <h3 class="mode-card-title">Suma por Diferencia</h3>
+            <p class="mode-card-desc">(a + b)(a - b) = a² - b². Cancelación del término medio.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="termino_comun">
-            <div class="menu-card-icon">🟧</div>
-            <h3 class="menu-card-title">Binomio con Término Común</h3>
-            <p class="menu-card-desc">(x + a)(x + b) = x² + (a+b)x + ab.</p>
-            <span class="menu-card-tag">Productos Notables</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="termino_comun">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">🟧</div>
+              <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">Productos Notables</span>
+            </div>
+            <h3 class="mode-card-title">Binomio con Término Común</h3>
+            <p class="mode-card-desc">(x + a)(x + b) = x² + (a+b)x + ab.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="factor_comun">
-            <div class="menu-card-icon">🔑</div>
-            <h3 class="menu-card-title">Factor Común Monomio</h3>
-            <p class="menu-card-desc">Extracción del M.C.D. algebraico fuera del paréntesis.</p>
-            <span class="menu-card-tag">Factorización</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="factor_comun">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">🔑</div>
+              <span class="mode-tag-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">Factorización</span>
+            </div>
+            <h3 class="mode-card-title">Factor Común Monomio</h3>
+            <p class="mode-card-desc">Extracción del M.C.D. algebraico fuera del paréntesis.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="trinomio">
-            <div class="menu-card-icon">💎</div>
-            <h3 class="menu-card-title">Factorización de Trinomios</h3>
-            <p class="menu-card-desc">x² + px + q a binomios con término común (m·n=q y m+n=p).</p>
-            <span class="menu-card-tag">Factorización</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="trinomio">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">💎</div>
+              <span class="mode-tag-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">Factorización</span>
+            </div>
+            <h3 class="mode-card-title">Factorización de Trinomios</h3>
+            <p class="mode-card-desc">x² + px + q a binomios con término común (m·n=q y m+n=p).</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="diferencia_cuadrados">
-            <div class="menu-card-icon">✂️</div>
-            <h3 class="menu-card-title">Diferencia de Cuadrados</h3>
-            <p class="menu-card-desc">a² - b² a (a+b)(a-b) con raíces cuadradas exactas.</p>
-            <span class="menu-card-tag">Factorización</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="diferencia_cuadrados">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">✂️</div>
+              <span class="mode-tag-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--secondary-mint);">Factorización</span>
+            </div>
+            <h3 class="mode-card-title">Diferencia de Cuadrados</h3>
+            <p class="mode-card-desc">a² - b² a (a+b)(a-b) con raíces cuadradas exactas.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="lineal_entera">
-            <div class="menu-card-icon">⚖️</div>
-            <h3 class="menu-card-title">Ecuaciones Lineales</h3>
-            <p class="menu-card-desc">ax + b = cx + d usando el modelo de la balanza.</p>
-            <span class="menu-card-tag">Ecuaciones 1° Grado</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="lineal_entera">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">⚖️</div>
+              <span class="mode-tag-pill" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">Ecuaciones 1° Grado</span>
+            </div>
+            <h3 class="mode-card-title">Ecuaciones Lineales</h3>
+            <p class="mode-card-desc">ax + b = cx + d usando el modelo físico de la balanza.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="lineal_parentesis">
-            <div class="menu-card-icon">🎯</div>
-            <h3 class="menu-card-title">Ecuaciones con Paréntesis</h3>
-            <p class="menu-card-desc">Aplicación de la propiedad distributiva a(x+b) = c.</p>
-            <span class="menu-card-tag">Ecuaciones 1° Grado</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="lineal_parentesis">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">🎯</div>
+              <span class="mode-tag-pill" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">Ecuaciones 1° Grado</span>
+            </div>
+            <h3 class="mode-card-title">Ecuaciones con Paréntesis</h3>
+            <p class="mode-card-desc">Aplicación de la propiedad distributiva a(x+b) = c.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="cubo_binomio">
-            <div class="menu-card-icon">🧊</div>
-            <h3 class="menu-card-title">Cubo de Binomio</h3>
-            <p class="menu-card-desc">(a ± b)³ = a³ ± 3a²b + 3ab² ± b³. Expansión de 4 términos.</p>
-            <span class="menu-card-tag">Productos Notables</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="cubo_binomio">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">🧊</div>
+              <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">Productos Notables</span>
+            </div>
+            <h3 class="mode-card-title">Cubo de Binomio</h3>
+            <p class="mode-card-desc">(a ± b)³ = a³ ± 3a²b + 3ab² ± b³. Expansión de 4 términos.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="lineal_fraccionaria">
-            <div class="menu-card-icon">➗</div>
-            <h3 class="menu-card-title">Ecuaciones Fraccionarias</h3>
-            <p class="menu-card-desc">Ecuaciones de primer grado con denominadores algebraicos y numéricos.</p>
-            <span class="menu-card-tag">Ecuaciones 1° Grado</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="lineal_fraccionaria">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">➗</div>
+              <span class="mode-tag-pill" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">Ecuaciones 1° Grado</span>
+            </div>
+            <h3 class="mode-card-title">Ecuaciones Fraccionarias</h3>
+            <p class="mode-card-desc">Ecuaciones de primer grado con denominadores algebraicos y numéricos.</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="problema_planteo">
-            <div class="menu-card-icon">🧠</div>
-            <h3 class="menu-card-title">Problemas de Planteo</h3>
-            <p class="menu-card-desc">Modelamiento algebraico de enunciados verbales (edades, perímetros, números).</p>
-            <span class="menu-card-tag">Ecuaciones y Modelos</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="problema_planteo">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🧠</div>
+              <span class="mode-tag-pill" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Modelos Verbales</span>
+            </div>
+            <h3 class="mode-card-title">Problemas de Planteo</h3>
+            <p class="mode-card-desc">Modelamiento algebraico de enunciados verbales (edades, perímetros, números).</p>
           </div>
 
-          <div class="menu-card practice-topic-btn" data-topic="terminos_semejantes">
-            <div class="menu-card-icon">🌿</div>
-            <h3 class="menu-card-title">Términos Semejantes</h3>
-            <p class="menu-card-desc">Reducción y agrupación de términos con la misma parte literal.</p>
-            <span class="menu-card-tag">Operaciones Algebraicas</span>
-          </div>
-
-          <div class="menu-card practice-topic-btn" data-topic="monomio_por_polinomio">
-            <div class="menu-card-icon">✖️</div>
-            <h3 class="menu-card-title">Monomio por Polinomio</h3>
-            <p class="menu-card-desc">Multiplicación distributiva término a término y ley de signos.</p>
-            <span class="menu-card-tag">Operaciones Algebraicas</span>
-          </div>
-
-          <div class="menu-card practice-topic-btn" data-topic="potencias_algebraicas">
-            <div class="menu-card-icon">⚡</div>
-            <h3 class="menu-card-title">Propiedades de Potencias</h3>
-            <p class="menu-card-desc">Multiplicación y división de potencias de igual base y potencias de potencia.</p>
-            <span class="menu-card-tag">Álgebra Fundamental</span>
-          </div>
-
-          <div class="menu-card practice-topic-btn" data-topic="fracciones_simplificacion">
-            <div class="menu-card-icon">📊</div>
-            <h3 class="menu-card-title">Fracciones Algebraicas</h3>
-            <p class="menu-card-desc">Simplificación cancelando factores comunes en numerador y denominador.</p>
-            <span class="menu-card-tag">Fracciones Algebraicas</span>
+          <div class="glass-panel mode-card practice-topic-btn" data-topic="terminos_semejantes">
+            <div class="mode-card-header">
+              <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">🌿</div>
+              <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">Álgebra Elemental</span>
+            </div>
+            <h3 class="mode-card-title">Términos Semejantes</h3>
+            <p class="mode-card-desc">Reducción y agrupación de términos con la misma parte literal.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. VISTA: CUADERNO DE FÓRMULAS DE 1° MEDIO -->
+    <!-- ====================================================================
+         4. VISTA: CUADERNO DE FÓRMULAS DE 1° MEDIO
+         ==================================================================== -->
     <section id="view-cheatsheet" class="view-section">
-      <div class="hero-card">
+      <div class="glass-panel hero-card" style="text-align: left;">
         <h2 class="hero-title">📖 Cuaderno de Fórmulas de Manuel</h2>
         <p class="hero-subtitle">
           Resumen oficial de fórmulas y reglas de Álgebra de 1° Medio (MINEDUC Chile). ¡Consúltalo cuando lo necesites!
         </p>
 
         <div style="margin-bottom: 1.5rem;">
-          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú</button>
+          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú Principal</button>
         </div>
 
         <div id="cheatsheet-grid" class="cheatsheet-grid">
@@ -353,16 +715,18 @@
       </div>
     </section>
 
-    <!-- 5. VISTA: CLASIFICACIÓN / LEADERBOARD -->
+    <!-- ====================================================================
+         5. VISTA: CLASIFICACIÓN / LEADERBOARD
+         ==================================================================== -->
     <section id="view-leaderboard" class="view-section">
-      <div class="hero-card">
+      <div class="glass-panel hero-card" style="text-align: left;">
         <h2 class="hero-title">🏆 Salón de la Fama</h2>
         <p class="hero-subtitle">
-          Mejores puntuaciones registradas en el Reino del Álgebra.
+          Mejores puntuaciones registradas por los estudiantes en el Reino del Álgebra.
         </p>
 
         <div style="margin-bottom: 1.5rem;">
-          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú</button>
+          <button class="btn btn-secondary btn-back-menu">⬅️ Volver al Menú Principal</button>
         </div>
 
         <div style="overflow-x: auto;">
@@ -386,17 +750,35 @@
 
   </main>
 
-  <!-- MODAL: DIPLOMA DE HONOR -->
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div>
+        <strong style="color: #fff; font-family: var(--font-display);">MANUEL: ÁLGEBRA</strong>
+        <span> — Plataforma Educativa Gamificada para 1° Medio Chile</span>
+      </div>
+      <div class="site-footer-links">
+        <span>Alineado a las Bases Curriculares MINEDUC</span>
+        <span>•</span>
+        <a href="#view-menu" class="btn-back-menu">Inicio</a>
+        <span>•</span>
+        <a href="#view-cheatsheet" id="footer-btn-cheatsheet">Cuaderno de Fórmulas</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: DIPLOMA DE HONOR (SIMCE) -->
   <div id="modal-diploma" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="diploma-title">
     <div class="modal-content" style="text-align: center;">
       <button class="modal-close" id="btn-close-diploma" aria-label="Cerrar modal">&times;</button>
-      <h2 id="diploma-title" style="font-size: 1.8rem; font-weight: 800; color: #fbbf24; margin-bottom: 0.5rem;">
+      <h2 id="diploma-title" style="font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--tertiary-gold); margin-bottom: 0.5rem;">
         🎓 ¡Felicitaciones! Has completado el Desafío
       </h2>
-      <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1rem;">
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
         Aquí tienes tu diploma acreditando tu maestría en Productos Notables y Ecuaciones Lineales de 1° Medio.
+      </p>
       <div style="margin: 0.8rem auto 1.2rem auto; max-width: 440px; display: flex; gap: 0.5rem; justify-content: center;">
-        <input type="text" id="input-diploma-name" placeholder="Tu Nombre y Apellido" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.85rem; color: #fff; font-size: 0.95rem; width: 70%;" />
+        <input type="text" id="input-diploma-name" placeholder="Tu Nombre y Apellido" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass-high); border-radius: 8px; padding: 0.55rem 0.85rem; color: #fff; font-size: 0.95rem; width: 70%; font-family: var(--font-display);" />
         <button id="btn-update-diploma-name" class="btn btn-secondary" style="padding: 0.55rem 0.9rem; font-size: 0.85rem;">Actualizar</button>
       </div>
 
@@ -410,6 +792,6 @@
   </div>
 
   <!-- SCRIPTS -->
-  <script type="module" src="/js/game.js?v=3.1.0"></script>
+  <script type="module" src="/js/game.js?v=3.2.0"></script>
 </body>
 </html>

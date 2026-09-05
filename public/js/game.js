@@ -49,6 +49,9 @@ class GameController {
     this.renderManuelAvatars('normal');
     this.balanceScale = new BalanceScale(document.getElementById('balance-container'));
     this.tilesVisualizer = new AlgebraTilesVisualizer(document.getElementById('tiles-container'));
+    // Mostrar nombre del jugador en el HUD de la navbar
+    const hudName = document.getElementById('user-hud-name');
+    if (hudName) hudName.textContent = this.playerName;
     this.loadCurriculum(); // Actualización opcional en background
   }
 
@@ -186,6 +189,75 @@ class GameController {
         const card = e.currentTarget;
         const topic = card.dataset.topic;
         this.startPracticeTopic(topic);
+      });
+    });
+
+    // Botón directo de Balanza Algebraica Dinámica
+    const btnBalance = document.getElementById('btn-start-balance');
+    if (btnBalance) {
+      btnBalance.addEventListener('click', () => {
+        sound.playClick();
+        this.startPracticeTopic('lineal_entera');
+      });
+    }
+
+    // Botón del Footer para el Cuaderno
+    const footerCheatsheet = document.getElementById('footer-btn-cheatsheet');
+    if (footerCheatsheet) {
+      footerCheatsheet.addEventListener('click', (e) => {
+        e.preventDefault();
+        sound.playClick();
+        this.showCheatsheet();
+      });
+    }
+
+    // Filtros Curriculares OA de 1° Medio
+    document.querySelectorAll('.oa-filter-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        sound.playClick();
+        document.querySelectorAll('.oa-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const topic = btn.dataset.topic;
+        if (topic === 'all') {
+          this.switchView('practiceSelect');
+        } else if (topic === 'balanza') {
+          this.startPracticeTopic('lineal_entera');
+        } else {
+          this.startPracticeTopic(topic);
+        }
+      });
+    });
+
+    // Desafío Relámpago del Día (Interactive Daily Puzzle)
+    const puzzleOptions = document.querySelectorAll('#puzzle-daily-options .puzzle-option-btn');
+    const puzzleFeedback = document.getElementById('puzzle-daily-feedback');
+    let puzzleSolved = false;
+
+    puzzleOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (puzzleSolved) return;
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+        puzzleOptions.forEach(b => b.classList.remove('correct', 'wrong'));
+        
+        if (isCorrect) {
+          puzzleSolved = true;
+          btn.classList.add('correct');
+          sound.playCorrect();
+          launchConfetti();
+          this.score += 50;
+          this.updateStats();
+          if (puzzleFeedback) {
+            puzzleFeedback.className = 'puzzle-feedback-msg success';
+            puzzleFeedback.innerHTML = '<strong>¡Correcto! 🎉 (+50 XP)</strong> Al desarrollar: (4x² + 12x + 9) - (4x² - 12x + 9) = 12x - (-12x) = <strong>24x</strong>. ¡Excelente comprensión de los signos y binomios!';
+          }
+        } else {
+          btn.classList.add('wrong');
+          sound.playWrong();
+          if (puzzleFeedback) {
+            puzzleFeedback.className = 'puzzle-feedback-msg error';
+            puzzleFeedback.innerHTML = '<strong>¡Cuidado con el signo menos!</strong> Recuerda que: -(4x² - 12x + 9) invierte todos los signos internos: -4x² + 12x - 9. Los términos cuadráticos y numéricos se anulan, sumando 12x + 12x = 24x.';
+          }
+        }
       });
     });
 

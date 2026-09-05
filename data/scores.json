@@ -26,5 +26,61 @@
     "world": 4,
     "date": "2026-09-04",
     "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 800,
+    "world": 3,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 700,
+    "world": 2,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 600,
+    "world": 2,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 500,
+    "world": 2,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 400,
+    "world": 2,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 300,
+    "world": 1,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 200,
+    "world": 1,
+    "date": "2026-09-05",
+    "medal": "Bronce"
+  },
+  {
+    "player": "Manuel",
+    "score": 100,
+    "world": 1,
+    "date": "2026-09-05",
+    "medal": "Bronce"
   }
 ]
