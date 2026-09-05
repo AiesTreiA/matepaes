@@ -53,7 +53,7 @@ export const WORLDS = [
     requiredCorrect: 4,
     lore: {
       intro: "Llegamos a las milenarias Ruinas de los Productos Notables. Las puertas de piedra tienen inscritos binomios mágicos: cuadrados de binomio, suma por diferencia y binomios con término común. ¡Si calculamos la expansión exacta, los sellos se abrirán!",
-      cleared: "¡Increíble! Dominamos el cuadrado de binomio y la suma por diferencia. ¡Las puertas se abrieron de par en par!"
+      cleared: "¡Increíble! Dominamos el cuadrado de binomio (el primero al cuadrado más el doble del primero por el segundo más el segundo al cuadrado) y la suma por diferencia. ¡Las puertas se abrieron de par en par!"
     },
     enemy: {
       name: "Esfinge Binomial",
@@ -137,7 +137,7 @@ export const CHEATSHEET = [
     titulo: "Suma por Diferencia",
     formula: "(a + b)(a - b) = a² - b²",
     regla: "El cuadrado del término con igual signo MENOS el cuadrado del término con signo opuesto. ¡Los términos medios se anulan!",
-    ejemplo: "(x + y)(x - y) = x² - y²"
+    ejemplo: "(x + 3)(x - 3) = x² - 3² = x² - 9"
   },
   {
     id: "termino_comun",
@@ -159,6 +159,34 @@ export const CHEATSHEET = [
     formula: "ax + b = c  =>  ax = c - b  =>  x = (c - b) / a",
     regla: "Lo que se suma a un lado se resta al otro; lo que multiplica pasa dividiendo. Siempre mantener la igualdad equilibrada.",
     ejemplo: "3x + 6 = 21 => 3x = 21 - 6 => 3x = 15 => x = 15/3 => x = 5"
+  },
+  {
+    id: "cubo_binomio",
+    titulo: "Cubo de Binomio",
+    formula: "(a ± b)³ = a³ ± 3a²b + 3ab² ± b³",
+    regla: "Cubo del primero, ± triple del cuadrado del primero por el segundo, + triple del primero por el cuadrado del segundo, ± cubo del segundo.",
+    ejemplo: "(x + 2)³ = x³ + 3·x²·2 + 3·x·2² + 2³ = x³ + 6x² + 12x + 8"
+  },
+  {
+    id: "fracciones_algebraicas",
+    titulo: "Fracciones Algebraicas",
+    formula: "(P(x) · Q(x)) / (P(x) · R(x)) = Q(x) / R(x)",
+    regla: "Para simplificar una fracción algebraica, factoriza primero el numerador y el denominador. Cancela únicamente factores completos.",
+    ejemplo: "(x² - 9) / (x + 3) = (x + 3)(x - 3) / (x + 3) = x - 3"
+  },
+  {
+    id: "potencias_algebraicas",
+    titulo: "Propiedades de Potencias",
+    formula: "aᵐ · aⁿ = aᵐ⁺ⁿ  |  aᵐ / aⁿ = aᵐ⁻ⁿ  |  (aᵐ)ⁿ = aᵐ·ⁿ",
+    regla: "Al multiplicar potencias de igual base se suman exponentes. Al dividir se restan. En potencia de potencia se multiplican.",
+    ejemplo: "x³ · x⁵ = x⁸  |  x⁷ / x² = x⁵  |  (x²)⁴ = x⁸"
+  },
+  {
+    id: "problema_planteo",
+    titulo: "Problemas de Planteo (Lenguaje Algebraico)",
+    formula: "Enunciado verbal  ==>  Ecuación lineal",
+    regla: "El doble es 2x, el triple 3x, el consecutivo x+1, la mitad x/2, hace 5 años x-5, en 5 años x+5.",
+    ejemplo: "El triple de un número aumentado en 4 es 19: 3x + 4 = 19 => 3x = 15 => x = 5"
   }
 ];
 

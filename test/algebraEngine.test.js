@@ -4,13 +4,18 @@ import {
   generateSquareOfBinomial,
   generateSumByDifference,
   generateCommonTermBinomial,
+  generateCubicBinomial,
   generateCommonFactor,
   generateTrinomialFactorization,
   generateDifferenceOfSquares,
   generateLinearEquation,
   generateEquationWithParentheses,
   generateFractionalEquation,
+  generateWordProblem,
   generateSimilarTermsReduction,
+  generateMonomialByPolynomial,
+  generatePowersProperties,
+  generateFractionSimplification,
   verifyAnswer,
   generateExercise
 } from '../lib/algebraEngine.js';
@@ -92,18 +97,62 @@ test('verifyAnswer acepta formatos variados y conmutatividad', () => {
   assert.equal(v4.isCorrect, true);
 });
 
+test('Cubo de Binomio genera desarrollos cúbicos de 4 términos', () => {
+  for (let i = 0; i < 10; i++) {
+    const ex = generateCubicBinomial(1);
+    assert.ok(ex.expression.includes('³'));
+    assert.equal(ex.options.length, 4);
+    assert.ok(ex.options.includes(ex.correctAnswer));
+    assert.ok(ex.correctAnswer.includes('³'));
+  }
+});
+
+test('Problemas de Planteo modelan lenguaje algebraico con solución numérica entera', () => {
+  for (let i = 0; i < 10; i++) {
+    const ex = generateWordProblem(1);
+    assert.ok(ex.question.length > 15);
+    assert.equal(typeof ex.numericAnswer, 'number');
+    assert.equal(ex.options.length, 4);
+    assert.ok(ex.options.includes(ex.correctAnswer));
+  }
+});
+
+test('Fracciones algebraicas simplifican correctamente', () => {
+  for (let i = 0; i < 10; i++) {
+    const ex = generateFractionSimplification(1);
+    assert.ok(ex.expression.includes('/'));
+    assert.equal(ex.options.length, 4);
+    assert.ok(ex.options.includes(ex.correctAnswer));
+  }
+});
+
+test('Propiedades de potencias y Monomio por Polinomio generan opciones válidas', () => {
+  const pot = generatePowersProperties(1);
+  assert.equal(pot.options.length, 4);
+  assert.ok(pot.options.includes(pot.correctAnswer));
+
+  const mono = generateMonomialByPolynomial(1);
+  assert.equal(mono.options.length, 4);
+  assert.ok(mono.options.includes(mono.correctAnswer));
+});
+
 test('generateExercise genera cualquier tema solicitado', () => {
   const topics = [
     'cuadrado_binomio',
     'suma_por_diferencia',
     'termino_comun',
+    'cubo_binomio',
     'factor_comun',
     'trinomio',
     'diferencia_cuadrados',
     'lineal_entera',
     'lineal_parentesis',
     'lineal_fraccionaria',
+    'problema_planteo',
     'terminos_semejantes',
+    'monomio_por_polinomio',
+    'potencias_algebraicas',
+    'fracciones_simplificacion',
     'productos_notables_aleatorio',
     'ecuaciones_aleatorio',
     'simce_1medio'
@@ -115,5 +164,6 @@ test('generateExercise genera cualquier tema solicitado', () => {
     assert.ok(ex.question);
     assert.ok(ex.correctAnswer);
     assert.equal(ex.options.length, 4);
+    assert.ok(ex.options.includes(ex.correctAnswer));
   }
 });

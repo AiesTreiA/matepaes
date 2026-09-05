@@ -8,6 +8,7 @@ import { BalanceScale } from './balanceView.js';
 import { AlgebraTilesVisualizer } from './algebraTiles.js';
 import { getManuelAvatarSvg, getEnemyAvatarSvg, launchConfetti, renderDiploma } from './ui.js';
 import { CURRICULUM_INFO, WORLDS, CHEATSHEET, ACHIEVEMENTS } from './curriculumData.js';
+import { generateExercise, verifyAnswer } from './algebraEngine.js';
 
 class GameController {
   constructor() {
@@ -317,12 +318,18 @@ class GameController {
       cuadrado_binomio: 'Cuadrado de Binomio: (a ± b)²',
       suma_por_diferencia: 'Suma por Diferencia: (x + y)(x - y) = x² - y²',
       termino_comun: 'Binomio con Término Común: (x + a)(x + b)',
+      cubo_binomio: 'Cubo de Binomio: (a ± b)³',
       factor_comun: 'Factor Común Monomio',
       trinomio: 'Factorización de Trinomios: x² + px + q',
       diferencia_cuadrados: 'Diferencia de Cuadrados: a² - b²',
       lineal_entera: 'Ecuaciones Lineales Enteras: ax + b = cx + d',
       lineal_parentesis: 'Ecuaciones con Paréntesis: a(x + b) = c',
-      lineal_fraccionaria: 'Ecuaciones Fraccionarias: (x + a)/b = c'
+      lineal_fraccionaria: 'Ecuaciones Fraccionarias: (x + a)/b = c',
+      problema_planteo: 'Problemas de Planteo: Lenguaje Algebraico',
+      terminos_semejantes: 'Reducción de Términos Semejantes',
+      monomio_por_polinomio: 'Monomio por Polinomio',
+      potencias_algebraicas: 'Propiedades de Potencias',
+      fracciones_simplificacion: 'Fracciones Algebraicas (Simplificación)'
     };
 
     const displayTopic = topicLabels[topic] || (topic ? topic.replace(/_/g, ' ').toUpperCase() : 'ÁLGEBRA');
@@ -410,7 +417,7 @@ class GameController {
   // -------------------------------------------------------------
   // CARGA Y VALIDACIÓN DE EJERCICIOS
   // -------------------------------------------------------------
-  async loadNextExercise(topicOverride = null) {
+  loadNextExercise(topicOverride = null) {
     this.feedbackBox.classList.remove('active');
     this.nextBtn.style.display = 'none';
 
@@ -438,11 +445,18 @@ class GameController {
     }
 
     try {
-      const res = await fetch(`/api/exercise?topic=${topic}&level=${level}`);
-      const exercise = await res.json();
+      // Generación 100% directa en cliente (0 ms de espera, sin fallos de red ni modal congelado)
+      const exercise = generateExercise(topic, level);
       this.renderExercise(exercise);
     } catch (err) {
-      console.error('Error cargando ejercicio:', err);
+      console.error('Error generando ejercicio localmente:', err);
+      // Fallback garantizado
+      try {
+        const fallbackEx = generateExercise('cuadrado_binomio', 1);
+        this.renderExercise(fallbackEx);
+      } catch (e2) {
+        console.error('Error en fallback:', e2);
+      }
     }
   }
 
@@ -476,31 +490,44 @@ class GameController {
     this.renderManuelAvatars('thinking');
   }
 
-  async handleAnswer(selectedOption, clickedButton) {
+  handleAnswer(selectedOption, clickedButton) {
     // Deshabilitar botones para evitar múltiples clics
     const allButtons = this.optionsContainer.querySelectorAll('.option-btn');
     allButtons.forEach(b => b.disabled = true);
 
     try {
-      const res = await fetch('/api/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userAnswer: selectedOption,
-          correctAnswer: this.currentExercise.correctAnswer,
-          numericAnswer: this.currentExercise.numericAnswer ?? null
-        })
-      });
+      // Verificación 100% directa e inmediata en cliente
+      const result = verifyAnswer(
+        selectedOption,
+        this.currentExercise.correctAnswer,
+        this.currentExercise.numericAnswer ?? null
+      );
 
-      const { isCorrect } = await res.json();
-
-      if (isCorrect) {
+      if (result && result.isCorrect) {
         this.onCorrectAnswer(clickedButton);
       } else {
         this.onWrongAnswer(clickedButton);
       }
+
+      // Sincronización en segundo plano con el servidor (opcional, sin bloquear)
+      if (this.score > 0) {
+        fetch('/api/scores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            player: this.playerName,
+            score: this.score,
+            world: this.currentWorldIndex + 1
+          })
+        }).catch(() => {});
+      }
     } catch (err) {
       console.error('Error al verificar:', err);
+      if (selectedOption === this.currentExercise.correctAnswer) {
+        this.onCorrectAnswer(clickedButton);
+      } else {
+        this.onWrongAnswer(clickedButton);
+      }
     }
   }
 
