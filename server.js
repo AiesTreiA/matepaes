@@ -37,11 +37,12 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 
 // ------------------------------------------------------------------
-// API ENDPOINTS
+// API ENDPOINTS (compatibles con /api/* y /* en Vercel)
 // ------------------------------------------------------------------
+const apiRouter = express.Router();
 
 // 1. Metadatos curriculares y narrativa
-app.get('/api/curriculum', (req, res) => {
+apiRouter.get('/curriculum', (req, res) => {
   res.json({
     curriculum: CURRICULUM_INFO,
     worlds: WORLDS,
@@ -51,7 +52,7 @@ app.get('/api/curriculum', (req, res) => {
 });
 
 // 2. Generador dinámico de ejercicios matemáticos
-app.get('/api/exercise', (req, res) => {
+apiRouter.get('/exercise', (req, res) => {
   const topic = req.query.topic || 'cuadrado_binomio';
   const level = parseInt(req.query.level, 10) || 1;
 
@@ -65,7 +66,7 @@ app.get('/api/exercise', (req, res) => {
 });
 
 // 3. Verificación de respuesta con feedback pedagógico
-app.post('/api/verify', (req, res) => {
+apiRouter.post('/verify', (req, res) => {
   const { userAnswer, correctAnswer, numericAnswer } = req.body;
 
   if (userAnswer === undefined || correctAnswer === undefined) {
@@ -77,12 +78,12 @@ app.post('/api/verify', (req, res) => {
 });
 
 // 4. Tabla de clasificación (Leaderboard)
-app.get('/api/scores', (req, res) => {
+apiRouter.get('/scores', (req, res) => {
   const scores = getScores();
   res.json(scores);
 });
 
-app.post('/api/scores', (req, res) => {
+apiRouter.post('/scores', (req, res) => {
   const { player, score, world } = req.body;
   if (!player || typeof score !== 'number') {
     return res.status(400).json({ error: 'Datos de puntaje inválidos' });
@@ -90,6 +91,10 @@ app.post('/api/scores', (req, res) => {
   const entry = addScore({ player, score, world });
   res.json({ success: true, entry, allScores: getScores() });
 });
+
+// Montar en ambos prefijos para que nunca falle en Vercel ni en local
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // Iniciar servidor localmente (en Vercel se usa como Serverless Function)
 if (!process.env.VERCEL) {

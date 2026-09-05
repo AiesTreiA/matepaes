@@ -7,10 +7,17 @@ import { sound } from './audio.js';
 import { BalanceScale } from './balanceView.js';
 import { AlgebraTilesVisualizer } from './algebraTiles.js';
 import { getManuelAvatarSvg, getEnemyAvatarSvg, launchConfetti, renderDiploma } from './ui.js';
+import { CURRICULUM_INFO, WORLDS, CHEATSHEET, ACHIEVEMENTS } from './curriculumData.js';
 
 class GameController {
   constructor() {
-    this.curriculumData = null;
+    // Datos curriculares inmediatos (sin esperar fetch de red)
+    this.curriculumData = {
+      curriculum: CURRICULUM_INFO,
+      worlds: WORLDS,
+      cheatsheet: CHEATSHEET,
+      achievements: ACHIEVEMENTS
+    };
     this.currentMode = 'menu'; // menu, story, practice, simce
     this.currentWorldIndex = 0;
     this.playerName = localStorage.getItem('manuel_player_name') || 'Manuel';
@@ -37,10 +44,11 @@ class GameController {
   async init() {
     this.setupDOMElements();
     this.bindEvents();
-    await this.loadCurriculum();
+    this.populateCheatsheet(this.curriculumData.cheatsheet);
     this.renderManuelAvatars('normal');
     this.balanceScale = new BalanceScale(document.getElementById('balance-container'));
     this.tilesVisualizer = new AlgebraTilesVisualizer(document.getElementById('tiles-container'));
+    this.loadCurriculum(); // Actualización opcional en background
   }
 
   setupDOMElements() {
@@ -174,10 +182,15 @@ class GameController {
   async loadCurriculum() {
     try {
       const res = await fetch('/api/curriculum');
-      this.curriculumData = await res.json();
-      this.populateCheatsheet(this.curriculumData.cheatsheet);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.worlds) && data.worlds.length > 0) {
+          this.curriculumData = data;
+          this.populateCheatsheet(this.curriculumData.cheatsheet);
+        }
+      }
     } catch (err) {
-      console.error('Error cargando currículum:', err);
+      console.warn('Aviso: usando base curricular local incorporada.', err);
     }
   }
 
@@ -225,11 +238,27 @@ class GameController {
     this.lives = 3;
     this.currentWorldIndex = 0;
     this.simceTimerEl.style.display = 'none';
+    if (!this.curriculumData || !this.curriculumData.worlds) {
+      this.curriculumData = {
+        curriculum: CURRICULUM_INFO,
+        worlds: WORLDS,
+        cheatsheet: CHEATSHEET,
+        achievements: ACHIEVEMENTS
+      };
+    }
     this.startWorld(this.currentWorldIndex);
   }
 
   startWorld(worldIndex) {
     this.currentWorldIndex = worldIndex;
+    if (!this.curriculumData || !this.curriculumData.worlds) {
+      this.curriculumData = {
+        curriculum: CURRICULUM_INFO,
+        worlds: WORLDS,
+        cheatsheet: CHEATSHEET,
+        achievements: ACHIEVEMENTS
+      };
+    }
     const world = this.curriculumData.worlds[worldIndex];
     if (!world) {
       this.triggerGameVictory();
