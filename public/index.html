@@ -350,7 +350,10 @@
       </h2>
       <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1rem;">
         Aquí tienes tu diploma acreditando tu maestría en Productos Notables y Ecuaciones Lineales de 1° Medio.
-      </p>
+      <div style="margin: 0.8rem auto 1.2rem auto; max-width: 440px; display: flex; gap: 0.5rem; justify-content: center;">
+        <input type="text" id="input-diploma-name" placeholder="Tu Nombre y Apellido" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 0.85rem; color: #fff; font-size: 0.95rem; width: 70%;" />
+        <button id="btn-update-diploma-name" class="btn btn-secondary" style="padding: 0.55rem 0.9rem; font-size: 0.85rem;">Actualizar</button>
+      </div>
 
       <canvas id="diploma-canvas" class="diploma-canvas"></canvas>
 
@@ -362,6 +365,6 @@
   </div>
 
   <!-- SCRIPTS -->
-  <script type="module" src="/js/game.js?v=1.3.0"></script>
+  <script type="module" src="/js/game.js?v=1.4.0"></script>
 </body>
 </html>

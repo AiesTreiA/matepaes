@@ -159,6 +159,25 @@ class GameController {
       link.click();
     });
 
+    // Actualizar nombre en diploma
+    const btnUpdateName = document.getElementById('btn-update-diploma-name');
+    const inputDiplomaName = document.getElementById('input-diploma-name');
+    if (btnUpdateName && inputDiplomaName) {
+      btnUpdateName.addEventListener('click', () => {
+        sound.playClick();
+        const newName = inputDiplomaName.value.trim();
+        if (newName) {
+          this.playerName = newName;
+          localStorage.setItem('manuel_player_name', newName);
+          let medal = 'Bronce';
+          if (this.score >= 1800) medal = 'Oro';
+          else if (this.score >= 1200) medal = 'Plata';
+          const canvas = document.getElementById('diploma-canvas');
+          renderDiploma(canvas, this.playerName, this.score, medal);
+        }
+      });
+    }
+
     // Selección de práctica por tema
     document.querySelectorAll('.practice-topic-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -377,6 +396,11 @@ class GameController {
         world: 5
       })
     });
+
+    const inputDiplomaName = document.getElementById('input-diploma-name');
+    if (inputDiplomaName) {
+      inputDiplomaName.value = this.playerName;
+    }
 
     const canvas = document.getElementById('diploma-canvas');
     renderDiploma(canvas, this.playerName, this.score, medal);
