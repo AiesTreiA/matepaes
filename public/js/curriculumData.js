@@ -34,7 +34,7 @@ export const WORLDS = [
     targetScore: 300,
     requiredCorrect: 3,
     lore: {
-      intro: "¡Hola! Soy Manuel, estudiante de 1° Medio. Me quedé dormido estudiando para la prueba de álgebra en el liceo y desperté en este misterioso bosque. El puente hacia la ciudad está bloqueado por ramas con monomios desordenados. ¡Ayúdame a reducir los términos semejantes para avanzar!",
+      intro: "¡Hola! Soy Manuel, estudiante de 1° Medio. Me quedé dormido estudiando para la prueba de álgebra en el colegio y desperté en este misterioso bosque. El puente hacia la ciudad está bloqueado por ramas con monomios desordenados. ¡Ayúdame a reducir los términos semejantes para avanzar!",
       cleared: "¡Bacán! Despejamos el camino uniendo los x² con x² y los números con números. ¡Cruzamos el puente hacia las Ruinas Antiguas!"
     },
     enemy: {
@@ -107,7 +107,7 @@ export const WORLDS = [
     requiredCorrect: 5,
     lore: {
       intro: "¡Ja, ja, ja! ¡Manuel, jamás podrás graduarte de 1° Medio! -grita el malévolo Dr. Monomio desde lo alto de su trono-. Lanzaré hechizos de ecuaciones con paréntesis, fracciones y productos notables combinados. ¡Demuestra si eres digno del título de Guardián del Álgebra!",
-      cleared: "¡VICTORIA TOTAL! Derrotaste al Dr. Monomio con tus conocimientos de álgebra. Manuel despierta en su pupitre justo a tiempo para sacar un 7.0 en la prueba del liceo. ¡Eres una leyenda de las matemáticas!"
+      cleared: "¡VICTORIA TOTAL! Derrotaste al Dr. Monomio con tus conocimientos de álgebra. Manuel despierta en su pupitre justo a tiempo para sacar un 7.0 en la prueba del colegio. ¡Eres una leyenda de las matemáticas!"
     },
     enemy: {
       name: "Dr. Monomio",
@@ -195,6 +195,6 @@ export const ACHIEVEMENTS = [
   { id: "rey_binomio", name: "Rey del Binomio", desc: "Resuelve 5 Cuadrados de Binomio sin fallar", icon: "👑" },
   { id: "balanza_zen", name: "Balanza Zen", desc: "Despeja 5 ecuaciones lineales con precisión", icon: "⚖️" },
   { id: "ojo_factor", name: "Ojo de Factorizador", desc: "Factoriza 5 trinomios correctamente", icon: "💎" },
-  { id: "vencedor_monomio", name: "Héroe del Liceo", desc: "Derrota al Dr. Monomio en la batalla final", icon: "🏆" },
+  { id: "vencedor_monomio", name: "Héroe del Colegio", desc: "Derrota al Dr. Monomio en la batalla final", icon: "🏆" },
   { id: "puntaje_nacional", name: "Puntaje Nacional", desc: "Obtén más de 2000 puntos en Modo Desafío", icon: "🌟" }
 ];
