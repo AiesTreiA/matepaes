@@ -9,9 +9,9 @@
   <!-- Google Fonts: Outfit (Display & Math) + Inter (Lectura) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="/css/style.css?v=3.2.0">
+  <link rel="stylesheet" href="/css/style.css?v=4.1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -59,6 +59,11 @@
           <span class="xp-label">XP</span>
         </div>
 
+        <!-- Oro RPG -->
+        <div class="stat-chip stat-gold" title="Monedas de Oro del Reino" id="nav-gold-chip">
+          <span id="rpg-stat-gold">100 🪙</span>
+        </div>
+
         <!-- Controles de Audio Lo-Fi & SFX -->
         <div class="audio-group">
           <button id="btn-toggle-bgm" class="btn-icon" title="Música Lo-Fi Álgebra" aria-label="Música de concentración">
@@ -77,7 +82,7 @@
           </div>
           <div class="user-hud-info">
             <span class="user-hud-name" id="user-hud-name">Manuel</span>
-            <span class="user-hud-rank">Nv. 5 Guardián</span>
+            <span class="user-hud-rank" id="rpg-stat-party-level">Nv. 1 Héroe</span>
           </div>
         </div>
       </div>
@@ -130,6 +135,32 @@
         </div>
       </div>
 
+      <!-- BANNER DESTACADO: MODO AVENTURA RPG FINAL FANTASY -->
+      <article class="glass-panel rpg-banner-card" id="btn-start-rpg">
+        <div class="rpg-banner-glow"></div>
+        <div class="rpg-banner-content">
+          <div class="rpg-badge-row">
+            <span class="badge-rpg-legend">🎮 ¡NUEVO MODO GAMIFICADO!</span>
+            <span class="badge-rpg-type">Estilo Final Fantasy / JRPG</span>
+          </div>
+          <h3 class="rpg-banner-title">🗡️ Las Crónicas del Álgebra: Aventura RPG</h3>
+          <p class="rpg-banner-desc">
+            Explora 5 mundos en un <strong>mapa interactivo</strong>, desbloquea <strong>puertas mágicas</strong> y <strong>cofres con trampas</strong> resolviendo ejercicios de 1° Medio, y lucha en <strong>combates por turnos</strong> con la party de héroes (Manuel, Sofía y Nico).
+          </p>
+          <div class="rpg-banner-features">
+            <span class="rpg-feat-tag">🗺️ Mapa de Nodos</span>
+            <span class="rpg-feat-tag">⚔️ Batallas por Turnos</span>
+            <span class="rpg-feat-tag">🚪 Puertas & Sellos</span>
+            <span class="rpg-feat-tag">📦 Cofres & Botín</span>
+            <span class="rpg-feat-tag">🪄 Hechizos Matemáticos</span>
+          </div>
+          <button class="btn btn-primary btn-rpg-play">
+            <span>⚔️ ¡Comenzar Aventura RPG!</span>
+            <span>➡️</span>
+          </button>
+        </div>
+      </article>
+
       <!-- CHIPS DE FILTRADO POR OBJETIVOS DE APRENDIZAJE (MINEDUC) -->
       <div class="curriculum-chips-section">
         <div class="curriculum-chips-header">
@@ -168,40 +199,31 @@
         </div>
       </div>
 
-      <!-- CUADRÍCULA DE 6 MODOS DE JUEGO -->
+      <!-- CUADRÍCULA DE MODOS DE JUEGO -->
       <div class="menu-grid">
         
-        <!-- MODO 1: LA ODISEA DE MANUEL (HISTORIA) -->
+        <!-- MODO 1: LA ODISEA DE MANUEL (HISTORIA CLÁSICA) -->
         <article class="glass-panel mode-card" id="btn-start-story">
           <div class="mode-glow-orb" style="background: rgba(0, 210, 255, 0.2);"></div>
           <div>
             <div class="mode-card-header">
               <div class="mode-card-icon-wrap" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan);">
-                ⚔️
+                📖
               </div>
               <div class="mode-badge-col">
                 <span class="mode-tag-pill" style="background: rgba(0, 210, 255, 0.15); color: var(--primary-cyan); border-color: rgba(0, 210, 255, 0.3);">
                   Modo Historia
                 </span>
-                <span class="mode-sub-tag">Mundo 2 de 5</span>
+                <span class="mode-sub-tag">5 Reinos Clásicos</span>
               </div>
             </div>
             <h3 class="mode-card-title">La Odisea de Manuel</h3>
             <p class="mode-card-desc">
               Recorre 5 reinos matemáticos, vence a criaturas de monomios y derrota al <strong>Dr. Monomio</strong> en su torre del terror.
             </p>
-            <div class="mode-card-stat-box">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                <span style="color: var(--text-muted);">Mundo Activo: <strong style="color: #fff;">Desierto de Términos</strong></span>
-                <span style="color: var(--tertiary-gold); font-weight: 700;">Nivel 4/8</span>
-              </div>
-              <div class="progress-track" style="height: 6px;">
-                <div style="height: 100%; width: 50%; background: var(--tertiary-gold); border-radius: 999px;"></div>
-              </div>
-            </div>
           </div>
           <button class="btn-card-action btn-action-cyan">
-            <span>Continuar Aventura</span>
+            <span>Iniciar Historia</span>
             <span>➡️</span>
           </button>
         </article>
@@ -225,11 +247,6 @@
             <p class="mode-card-desc">
               Entrena temas específicos sin presión de tiempo. Visualiza áreas geométricas cuadradas y rectangulares para entender <strong>(a + b)²</strong>.
             </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 1.25rem;">
-              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Factor Común</span>
-              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Binomio Suma</span>
-              <span class="glass-chip" style="font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">Dif. Cuadrados</span>
-            </div>
           </div>
           <button class="btn-card-action btn-action-emerald">
             <span>Entrenar Libre</span>
@@ -256,10 +273,6 @@
             <p class="mode-card-desc">
               10 preguntas estandarizadas de 1° Medio. ¡Consigue puntaje destacado y obtén tu <strong>Diploma Digital Oficial</strong>!
             </p>
-            <div class="mode-card-stat-box" style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="color: var(--text-muted);">Mejor Marca:</span>
-              <span style="color: #fff; font-weight: 700;">🏆 9 / 10 (2:14 min)</span>
-            </div>
           </div>
           <button class="btn-card-action btn-action-rose">
             <span>Iniciar Test SIMCE</span>
@@ -269,7 +282,7 @@
 
         <!-- MODO 4: BALANZA ALGEBRAICA DINÁMICA -->
         <article class="glass-panel mode-card" id="btn-start-balance">
-          <div class="mode-glow-orb" style="background: rgba(245, 158, 11, 0.2);"></div>
+          <div class="mode-glow-orb" style="background: rgba(245, 158, 11, 0.25);"></div>
           <div>
             <div class="mode-card-header">
               <div class="mode-card-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: var(--tertiary-gold);">
@@ -286,9 +299,6 @@
             <p class="mode-card-desc">
               Aprende a despejar la incógnita <strong>x</strong> de manera visual: quita o agrega pesas a ambos platillos para mantener el equilibrio.
             </p>
-            <div class="mode-card-stat-box" style="font-family: var(--font-display); text-align: center; color: var(--tertiary-gold);">
-              2x + 5 = 15  ➜  2x = 10  ➜  <strong style="color: #fff;">x = 5</strong>
-            </div>
           </div>
           <button class="btn-card-action btn-action-amber">
             <span>Abrir Simulador</span>
@@ -315,9 +325,6 @@
             <p class="mode-card-desc">
               Tarjetas de repaso rápido, demostraciones visuales por áreas coloreadas y 'hacks' mentales para resolver binomios en segundos.
             </p>
-            <div style="font-size: 0.75rem; color: #a5b4fc; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); padding: 0.5rem 0.75rem; border-radius: 8px; margin-bottom: 1.25rem;">
-              💡 Resumen oficial descargable de 1° Medio MINEDUC.
-            </div>
           </div>
           <button class="btn-card-action btn-action-indigo">
             <span>Abrir Cuaderno</span>
@@ -344,32 +351,16 @@
             <p class="mode-card-desc">
               Compite sanamente con tus compañeros de curso. Desbloquea medallas como <em>"Maestro del Trinomio"</em> y <em>"Ojo de Águila Lineal"</em>.
             </p>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; font-size: 0.72rem; margin-bottom: 1.25rem;">
-              <div class="glass-chip" style="padding: 4px;">
-                <span style="color: var(--text-muted); display: block;">#2 Camila</span>
-                <strong style="color: #fff;">1,620 XP</strong>
-              </div>
-              <div class="glass-chip" style="padding: 4px; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.15);">
-                <span style="color: var(--tertiary-gold); font-weight: 700; display: block;">🥇 #1 Matías</span>
-                <strong style="color: var(--tertiary-gold);">1,890 XP</strong>
-              </div>
-              <div class="glass-chip" style="padding: 4px;">
-                <span style="color: var(--primary-cyan); display: block;">#3 Tú</span>
-                <strong style="color: #fff;">1,450 XP</strong>
-              </div>
-            </div>
           </div>
           <button class="btn-card-action btn-action-amber">
-            <span>Ver Ranking y Medallas</span>
+            <span>Ver Ranking</span>
             <span>🏆</span>
           </button>
         </article>
 
       </div>
 
-      <!-- ====================================================================
-           🏛️ GALERÍA DE MAESTROS: LAS RAÍCES DEL ÁLGEBRA (STITCH FEATURE)
-           ==================================================================== -->
+      <!-- GALERÍA DE MAESTROS HISTÓRICOS -->
       <section class="glass-panel historical-masters-section" aria-label="Galería de figuras históricas de la matemática">
         <div class="historical-header">
           <div class="historical-badge-row">
@@ -433,9 +424,7 @@
         </div>
       </section>
 
-      <!-- ====================================================================
-           ⚡ DESAFÍO RELÁMPAGO DEL DÍA (STITCH QUICK PUZZLE WIDGET)
-           ==================================================================== -->
+      <!-- DESAFÍO RELÁMPAGO DEL DÍA -->
       <section class="glass-panel daily-puzzle-section" aria-label="Desafío diario de álgebra">
         <div class="daily-puzzle-header">
           <div class="daily-puzzle-tag">
@@ -480,7 +469,178 @@
     </section>
 
     <!-- ====================================================================
-         2. VISTA: TABLERO DE JUEGO (GAME BOARD)
+         2. VISTA: MAPA DEL MUNDO RPG CAMINABLE (2D CANVAS OVERWORLD)
+         ==================================================================== -->
+    <section id="view-rpg-map" class="view-section">
+      <!-- Barra superior de Navegación del Mapa RPG -->
+      <div class="rpg-map-nav-header glass-panel">
+        <div class="rpg-world-info">
+          <h2 id="rpg-world-title" class="rpg-world-main-title">🌲 Mundo 1: <span>El Bosque de los Monomios</span></h2>
+          <p id="rpg-world-subtitle" class="rpg-world-sub">Términos Semejantes & Factor Común (OA 2)</p>
+        </div>
+
+        <div class="rpg-map-actions">
+          <button id="rpg-prev-world" class="btn btn-secondary" title="Mundo Anterior">◀️ Anterior</button>
+          <button id="rpg-next-world" class="btn btn-secondary" title="Mundo Siguiente">Siguiente ▶️</button>
+          <button id="btn-rpg-party" class="btn btn-primary" title="Ver Party e Inventario">🎒 Mi Party & Bolsa</button>
+          <button class="btn btn-secondary btn-back-menu">🏠 Salir al Menú</button>
+        </div>
+      </div>
+
+      <!-- Lienzo Interactivo del Mapa 2D Caminable (Canvas con Montañas, Agua, Árboles y Fauna) -->
+      <div class="rpg-canvas-wrapper glass-panel">
+        <canvas id="rpg-overworld-canvas" class="rpg-overworld-canvas" width="1000" height="620"></canvas>
+
+        <!-- Indicador de Proximidad Flotante -->
+        <div id="rpg-proximity-prompt" class="rpg-proximity-banner" style="display: none;">
+          <span>💬 Presiona <strong>ESPACIO</strong> o toca el botón para interactuar</span>
+        </div>
+
+        <!-- Controles Táctiles en Pantalla (D-Pad Virtual para Móviles) -->
+        <div class="rpg-touch-controls">
+          <div class="rpg-dpad">
+            <button id="btn-dpad-up" class="dpad-btn dpad-up" aria-label="Arriba">▲</button>
+            <div class="dpad-mid-row">
+              <button id="btn-dpad-left" class="dpad-btn dpad-left" aria-label="Izquierda">◀</button>
+              <div class="dpad-center"></div>
+              <button id="btn-dpad-right" class="dpad-btn dpad-right" aria-label="Derecha">▶</button>
+            </div>
+            <button id="btn-dpad-down" class="dpad-btn dpad-down" aria-label="Abajo">▼</button>
+          </div>
+
+          <button id="btn-dpad-action" class="dpad-action-btn" aria-label="Interactuar">
+            <span>💬</span>
+            <span style="font-size: 0.65rem; font-weight: 800;">ACCIÓN</span>
+          </button>
+        </div>
+
+        <!-- Mini Guía de Controles Flotante -->
+        <div class="rpg-controls-hint">
+          <span>⌨️ <strong>WASD / Flechas</strong> para caminar • <strong>Espacio</strong> interactuar • <strong>Click / Tap</strong> ir al punto</span>
+        </div>
+      </div>
+
+      <!-- Leyenda de Nodos y Elementos del Mapa -->
+      <div class="rpg-map-legend glass-panel">
+        <div class="legend-item"><span class="legend-icon">⚔️</span> <strong>Monstruo:</strong> Camina hacia él para combatir</div>
+        <div class="legend-item"><span class="legend-icon">🚪</span> <strong>Portón Rúnico:</strong> Resuelve el enigma para abrir el paso</div>
+        <div class="legend-item"><span class="legend-icon">📦</span> <strong>Cofre Oculto:</strong> Desactiva la trampa y gana botín</div>
+        <div class="legend-item"><span class="legend-icon">⛲</span> <strong>Santuario:</strong> Recupera 100% de HP/MP con agua sagrada</div>
+        <div class="legend-item"><span class="legend-icon">👑</span> <strong>Jefe:</strong> Batalla de final de mundo</div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. VISTA: ESCENARIO DE COMBATE RPG POR TURNOS (ESTILO FINAL FANTASY)
+         ==================================================================== -->
+    <section id="view-rpg-battle" class="view-section">
+      <div class="rpg-battle-frame">
+        
+        <!-- Header de Batalla: Nombre de Enemigo y HP -->
+        <div class="rpg-battle-header glass-panel">
+          <div class="rpg-enemy-status">
+            <h3 id="rpg-enemy-name" class="rpg-enemy-name-text">Gólem Monomio Primordial</h3>
+            <div class="actor-hp-bar rpg-hp-bar">
+              <div id="rpg-enemy-hp-fill" class="actor-hp-fill" style="width: 100%;"></div>
+            </div>
+            <span id="rpg-enemy-hp-text" class="rpg-hp-val-text">120 / 120 HP</span>
+          </div>
+
+          <button id="btn-battle-flee" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+            🏃‍♂️ Huir al Mapa
+          </button>
+        </div>
+
+        <!-- Escenario de Combate: Monstruo vs Party -->
+        <div class="rpg-battle-arena">
+          <!-- Lado Izquierdo: Monstruo -->
+          <div class="rpg-battle-enemy-side">
+            <div id="rpg-enemy-sprite" class="rpg-enemy-sprite-container"></div>
+          </div>
+
+          <!-- Lado Derecho: Party de Héroes (Manuel, Sofía, Nico) -->
+          <div class="rpg-battle-party-side" id="rpg-battle-party-cards">
+            <!-- Renderizado dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Ventana de Registro / Log de Combate (Estilo Clásico JRPG) -->
+        <div class="rpg-battle-log-window">
+          <span id="rpg-battle-log-text">¡Comienza la batalla! Selecciona una acción para Manuel.</span>
+        </div>
+
+        <!-- Panel de Comandos de Acción Estilo Final Fantasy -->
+        <div class="rpg-battle-command-panel">
+          <div class="rpg-command-grid" id="rpg-battle-commands">
+            <button id="btn-cmd-attack" class="rpg-cmd-btn cmd-attack">
+              <span class="cmd-icon">⚔️</span>
+              <span class="cmd-text">ATACAR</span>
+            </button>
+            <button id="btn-cmd-skill" class="rpg-cmd-btn cmd-skill">
+              <span class="cmd-icon">🪄</span>
+              <span class="cmd-text">MAGIA / HAB.</span>
+            </button>
+            <button id="btn-cmd-defend" class="rpg-cmd-btn cmd-defend">
+              <span class="cmd-icon">🛡️</span>
+              <span class="cmd-text">DEFENDER</span>
+            </button>
+            <button id="btn-cmd-item" class="rpg-cmd-btn cmd-item">
+              <span class="cmd-icon">🧪</span>
+              <span class="cmd-text">OBJETO</span>
+            </button>
+          </div>
+
+          <!-- Submenú de Habilidades Mágicas -->
+          <div id="rpg-battle-skills-sub" class="rpg-submenu-panel" style="display: none;">
+            <h4 style="color: var(--primary-cyan); font-family: var(--font-display); margin-bottom: 0.5rem;">🪄 Habilidades del Héroe:</h4>
+            <div id="rpg-skills-list" class="rpg-sublist"></div>
+          </div>
+
+          <!-- Submenú de Objetos -->
+          <div id="rpg-battle-items-sub" class="rpg-submenu-panel" style="display: none;">
+            <h4 style="color: var(--secondary-mint); font-family: var(--font-display); margin-bottom: 0.5rem;">🧪 Bolsa de Objetos:</h4>
+            <div id="rpg-items-list" class="rpg-sublist"></div>
+          </div>
+        </div>
+
+        <!-- Modal Integrado de Ejercicio Algebraico de Combate -->
+        <div id="rpg-battle-exercise-panel" class="rpg-exercise-modal-box" style="display: none;">
+          <div class="rpg-exercise-header">
+            <span class="pulse-dot"></span>
+            <span id="rpg-exercise-title">Canalizando Ataque Matemático...</span>
+          </div>
+          <div id="rpg-exercise-prompt" class="problem-prompt" style="font-size: 1.05rem; margin-bottom: 0.4rem;">...</div>
+          <div id="rpg-exercise-formula" class="problem-formula" style="font-size: 1.35rem; margin-bottom: 1rem;">...</div>
+          <div id="rpg-exercise-options" class="options-grid"></div>
+          <div id="rpg-exercise-feedback"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. VISTA: EVENTO DE PUERTA / COFRE (INTERACCIÓN AMBIENTAL RPG)
+         ==================================================================== -->
+    <section id="view-rpg-event" class="view-section">
+      <div class="glass-panel hero-card" style="max-width: 760px; margin: 0 auto; text-align: center;">
+        <div id="rpg-event-icon" style="font-size: 3.5rem; margin-bottom: 0.5rem;">🔒</div>
+        <h2 id="rpg-event-title" class="hero-title" style="font-size: 1.6rem;">🚪 Mecanismo Rúnico</h2>
+        <p id="rpg-event-desc" class="hero-subtitle" style="margin-bottom: 1.5rem;">
+          Para desbloquear este pasaje, debes resolver el acertijo algebraico.
+        </p>
+
+        <div id="rpg-event-exercise" class="problem-card" style="margin-bottom: 1.5rem;">
+          <!-- Inyectado dinámicamente -->
+        </div>
+
+        <div>
+          <button class="btn btn-secondary" onclick="window.rpgEngine.exitBattle()">⬅️ Volver al Mapa</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. VISTA: TABLERO DE JUEGO CLÁSICO (LA ODISEA DE MANUEL)
          ==================================================================== -->
     <section id="view-game" class="view-section">
       <!-- Encabezado de Nivel -->
@@ -570,7 +730,7 @@
     </section>
 
     <!-- ====================================================================
-         3. VISTA: SELECCIÓN DE LABORATORIO DE PRÁCTICA
+         6. VISTA: SELECCIÓN DE LABORATORIO DE PRÁCTICA
          ==================================================================== -->
     <section id="view-practice-select" class="view-section">
       <div class="glass-panel hero-card" style="text-align: left;">
@@ -696,7 +856,7 @@
     </section>
 
     <!-- ====================================================================
-         4. VISTA: CUADERNO DE FÓRMULAS DE 1° MEDIO
+         7. VISTA: CUADERNO DE FÓRMULAS DE 1° MEDIO
          ==================================================================== -->
     <section id="view-cheatsheet" class="view-section">
       <div class="glass-panel hero-card" style="text-align: left;">
@@ -716,7 +876,7 @@
     </section>
 
     <!-- ====================================================================
-         5. VISTA: CLASIFICACIÓN / LEADERBOARD
+         8. VISTA: CLASIFICACIÓN / LEADERBOARD
          ==================================================================== -->
     <section id="view-leaderboard" class="view-section">
       <div class="glass-panel hero-card" style="text-align: left;">
@@ -791,7 +951,40 @@
     </div>
   </div>
 
+  <!-- MODAL: PARTY RPG, INVENTARIO Y ESTADÍSTICAS -->
+  <div id="modal-rpg-party" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="rpg-party-title">
+    <div class="modal-content" style="max-width: 780px;">
+      <button class="modal-close" aria-label="Cerrar modal">&times;</button>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.75rem;">
+        <div>
+          <h2 id="rpg-party-title" style="font-family: var(--font-display); font-size: 1.5rem; color: var(--primary-cyan); font-weight: 800;">
+            🎒 Party de Héroes & Inventario
+          </h2>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Gestiona tus personajes y objetos mágicos</span>
+        </div>
+        <div class="stat-chip stat-gold" id="rpg-party-gold-text" style="font-size: 1rem;">100 🪙 Monedas</div>
+      </div>
+
+      <!-- Lista de Miembros de la Party -->
+      <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">🛡️ Miembros de la Party</h3>
+      <div id="rpg-party-heroes-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <!-- Inventario de Objetos -->
+      <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: #fff; margin-bottom: 0.5rem;">🧪 Bolsa de Objetos Mágicos</h3>
+      <div id="rpg-party-inventory-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+      <div style="text-align: center;">
+        <button class="btn btn-secondary modal-close">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPTS -->
-  <script type="module" src="/js/game.js?v=3.2.0"></script>
+  <script type="module" src="/js/game.js?v=4.1.0"></script>
 </body>
 </html>

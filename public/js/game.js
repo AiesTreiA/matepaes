@@ -1,6 +1,7 @@
 /**
  * game.js
  * Lógica principal del videojuego "Manuel: Guardián del Álgebra" (1° Medio Chile)
+ * Integra el Modo Aventura RPG estilo Final Fantasy, Práctica Libre y SIMCE.
  */
 
 import { sound } from './audio.js';
@@ -9,21 +10,22 @@ import { AlgebraTilesVisualizer } from './algebraTiles.js';
 import { getManuelAvatarSvg, getEnemyAvatarSvg, launchConfetti, renderDiploma } from './ui.js';
 import { CURRICULUM_INFO, WORLDS, CHEATSHEET, ACHIEVEMENTS } from './curriculumData.js';
 import { generateExercise, verifyAnswer } from './algebraEngine.js';
+import { RPGEngine } from './rpgEngine.js';
 
 class GameController {
   constructor() {
-    // Datos curriculares inmediatos (sin esperar fetch de red)
+    // Datos curriculares inmediatos
     this.curriculumData = {
       curriculum: CURRICULUM_INFO,
       worlds: WORLDS,
       cheatsheet: CHEATSHEET,
       achievements: ACHIEVEMENTS
     };
-    this.currentMode = 'menu'; // menu, story, practice, simce
+    this.currentMode = 'menu'; // menu, story, practice, simce, rpg
     this.currentWorldIndex = 0;
     this.playerName = localStorage.getItem('manuel_player_name') || 'Manuel';
     
-    // Estado de partida
+    // Estado de partida clásica
     this.score = 0;
     this.lives = 3;
     this.worldProgress = 0;
@@ -40,6 +42,10 @@ class GameController {
     // Componentes interactivos
     this.balanceScale = null;
     this.tilesVisualizer = null;
+
+    // Motor de Aventura RPG estilo Final Fantasy
+    this.rpgEngine = new RPGEngine(this);
+    window.rpgEngine = this.rpgEngine;
   }
 
   async init() {
@@ -49,10 +55,14 @@ class GameController {
     this.renderManuelAvatars('normal');
     this.balanceScale = new BalanceScale(document.getElementById('balance-container'));
     this.tilesVisualizer = new AlgebraTilesVisualizer(document.getElementById('tiles-container'));
+    
+    // Inicializar Motor RPG
+    this.rpgEngine.init();
+
     // Mostrar nombre del jugador en el HUD de la navbar
     const hudName = document.getElementById('user-hud-name');
     if (hudName) hudName.textContent = this.playerName;
-    this.loadCurriculum(); // Actualización opcional en background
+    this.loadCurriculum();
   }
 
   setupDOMElements() {
@@ -61,7 +71,10 @@ class GameController {
       game: document.getElementById('view-game'),
       practiceSelect: document.getElementById('view-practice-select'),
       cheatsheet: document.getElementById('view-cheatsheet'),
-      leaderboard: document.getElementById('view-leaderboard')
+      leaderboard: document.getElementById('view-leaderboard'),
+      rpgMap: document.getElementById('view-rpg-map'),
+      rpgBattle: document.getElementById('view-rpg-battle'),
+      rpgEvent: document.getElementById('view-rpg-event')
     };
 
     this.scoreEl = document.getElementById('stat-score');
@@ -84,7 +97,17 @@ class GameController {
   }
 
   bindEvents() {
-    // Navegación del menú
+    // Modo Aventura RPG (Final Fantasy Style)
+    const btnStartRpg = document.getElementById('btn-start-rpg');
+    if (btnStartRpg) {
+      btnStartRpg.addEventListener('click', () => {
+        sound.playClick();
+        this.currentMode = 'rpg';
+        this.switchView('rpgMap');
+      });
+    }
+
+    // Navegación del menú clásico
     document.getElementById('btn-start-story').addEventListener('click', () => {
       sound.playClick();
       this.startStoryMode();
@@ -115,6 +138,7 @@ class GameController {
       btn.addEventListener('click', () => {
         sound.playClick();
         if (this.simceInterval) clearInterval(this.simceInterval);
+        this.currentMode = 'menu';
         this.switchView('menu');
       });
     });
@@ -228,7 +252,7 @@ class GameController {
       });
     });
 
-    // Desafío Relámpago del Día (Interactive Daily Puzzle)
+    // Desafío Relámpago del Día
     const puzzleOptions = document.querySelectorAll('#puzzle-daily-options .puzzle-option-btn');
     const puzzleFeedback = document.getElementById('puzzle-daily-feedback');
     let puzzleSolved = false;
@@ -294,6 +318,14 @@ class GameController {
       this.views[viewName].classList.add('active');
     }
     this.currentView = viewName;
+
+    // Control del bucle del Canvas del Mapa RPG
+    if (viewName === 'rpgMap' && this.rpgEngine) {
+      this.rpgEngine.startOverworldMap();
+    } else if (this.rpgEngine && this.rpgEngine.mapCanvas) {
+      this.rpgEngine.mapCanvas.stop();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -322,7 +354,7 @@ class GameController {
   }
 
   // -------------------------------------------------------------
-  // MODO HISTORIA
+  // MODO HISTORIA CLÁSICA
   // -------------------------------------------------------------
   startStoryMode() {
     this.currentMode = 'story';
@@ -330,27 +362,11 @@ class GameController {
     this.lives = 3;
     this.currentWorldIndex = 0;
     this.simceTimerEl.style.display = 'none';
-    if (!this.curriculumData || !this.curriculumData.worlds) {
-      this.curriculumData = {
-        curriculum: CURRICULUM_INFO,
-        worlds: WORLDS,
-        cheatsheet: CHEATSHEET,
-        achievements: ACHIEVEMENTS
-      };
-    }
     this.startWorld(this.currentWorldIndex);
   }
 
   startWorld(worldIndex) {
     this.currentWorldIndex = worldIndex;
-    if (!this.curriculumData || !this.curriculumData.worlds) {
-      this.curriculumData = {
-        curriculum: CURRICULUM_INFO,
-        worlds: WORLDS,
-        cheatsheet: CHEATSHEET,
-        achievements: ACHIEVEMENTS
-      };
-    }
     const world = this.curriculumData.worlds[worldIndex];
     if (!world) {
       this.triggerGameVictory();
@@ -382,7 +398,7 @@ class GameController {
   startPracticeTopic(topic) {
     this.practiceTopic = topic;
     this.currentMode = 'practice';
-    this.lives = 999; // vidas infinitas en práctica
+    this.lives = 999;
     this.worldProgress = 0;
     this.simceTimerEl.style.display = 'none';
 
@@ -428,7 +444,7 @@ class GameController {
     this.score = 0;
     this.lives = 3;
     this.simceQuestionCount = 0;
-    this.simceTimer = 180; // 3 minutos para 10 preguntas
+    this.simceTimer = 180;
     this.simceTimerEl.style.display = 'inline-flex';
 
     this.worldNameEl.textContent = "Desafío Contrarreloj 1° Medio (SIMCE)";
@@ -474,7 +490,7 @@ class GameController {
         score: this.score,
         world: 5
       })
-    });
+    }).catch(() => {});
 
     const inputDiplomaName = document.getElementById('input-diploma-name');
     if (inputDiplomaName) {
@@ -517,12 +533,10 @@ class GameController {
     }
 
     try {
-      // Generación 100% directa en cliente (0 ms de espera, sin fallos de red ni modal congelado)
       const exercise = generateExercise(topic, level);
       this.renderExercise(exercise);
     } catch (err) {
       console.error('Error generando ejercicio localmente:', err);
-      // Fallback garantizado
       try {
         const fallbackEx = generateExercise('cuadrado_binomio', 1);
         this.renderExercise(fallbackEx);
@@ -537,7 +551,6 @@ class GameController {
     this.promptEl.textContent = exercise.question;
     this.formulaEl.textContent = exercise.expression;
 
-    // Renderizar balanza o áreas según el ejercicio
     if (exercise.balanceData) {
       this.balanceScale.render(exercise.balanceData);
       if (this.tilesVisualizer) this.tilesVisualizer.render(null);
@@ -549,7 +562,6 @@ class GameController {
       if (this.tilesVisualizer) this.tilesVisualizer.render(null);
     }
 
-    // Renderizar opciones múltiples
     this.optionsContainer.innerHTML = '';
     exercise.options.forEach(opt => {
       const btn = document.createElement('button');
@@ -563,12 +575,10 @@ class GameController {
   }
 
   handleAnswer(selectedOption, clickedButton) {
-    // Deshabilitar botones para evitar múltiples clics
     const allButtons = this.optionsContainer.querySelectorAll('.option-btn');
     allButtons.forEach(b => b.disabled = true);
 
     try {
-      // Verificación 100% directa e inmediata en cliente
       const result = verifyAnswer(
         selectedOption,
         this.currentExercise.correctAnswer,
@@ -581,7 +591,6 @@ class GameController {
         this.onWrongAnswer(clickedButton);
       }
 
-      // Sincronización en segundo plano con el servidor (opcional, sin bloquear)
       if (this.score > 0) {
         fetch('/api/scores', {
           method: 'POST',
@@ -612,12 +621,10 @@ class GameController {
     this.score += 100;
     this.updateStats();
 
-    // Actualizar balanza si aplica
     if (this.currentExercise.balanceData) {
       this.balanceScale.setBalancedState(true);
     }
 
-    // Daño al enemigo
     this.enemyHp = Math.max(0, this.enemyHp - 35);
     this.updateEnemyHp();
 
@@ -654,7 +661,6 @@ class GameController {
     sound.playWrong();
     this.renderManuelAvatars('hurt');
 
-    // Resaltar la correcta
     const allButtons = this.optionsContainer.querySelectorAll('.option-btn');
     allButtons.forEach(b => {
       if (b.textContent === this.currentExercise.correctAnswer) {
